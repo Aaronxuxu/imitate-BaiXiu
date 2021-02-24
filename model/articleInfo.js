@@ -32,6 +32,11 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         type: Date,
         default: Date.now,
         required: true,
+    },
+    updateAt: {
+        type: Date,
+        default: Date.now,
+        required: true,
     }
 }));
 
@@ -47,17 +52,24 @@ const Category = mongoose.model('Category', new mongoose.Schema({
     }
 }));
 
-// 文章点赞
-const Fabulous = mongoose.model('Fabulou', new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User'
-    },
+// 文章点赞/评论/点赞数量
+const Meta = mongoose.model('Meta', new mongoose.Schema({
     post: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Posts'
+    },
+    views: {
+        type: Number,
+        default: 0
+    },
+    likes: {
+        type: Number,
+        default: 0
+    },
+    comments: {
+        type: Number,
+        default: 0
     }
 }));
 
@@ -89,4 +101,4 @@ const Comments = mongoose.model('Comment', new mongoose.Schema({
     }
 }));
 
-module.exports = { Posts, Category, Comments, Fabulous };
+module.exports = { Posts, Category, Comments, Meta };

@@ -5,6 +5,8 @@ const Users = mongoose.model('User', new mongoose.Schema({
     password: { type: String, required: true, minlength: 6, maxlength: 15 },
     role: { type: String, required: true },
     avatar: String,
-    status: { type: Boolean, required: true }
+    status: { type: Boolean, required: true },
+    createTime: { type: Date, default: Date.now, required: true }
 }));
+
 module.exports = Users;

@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const moment = require('moment');
-require('./model/connect')
+require('./model/connect');
 const app = express();
 
 // 设置post请求处理
@@ -19,15 +19,13 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-
 app.locals.moment = moment;
 
-app.use('/Users', require('./routes/Users'));
-app.use('/Slides', require('./routes/Slides'));
-app.use('/Settings', require('./routes/Settings'));
-app.use('/Posts', require('./routes/Posts'));
-app.use('/Comments', require('./routes/Comments'));
-app.use('/Category', require('./routes/Category'));
+app.use('/users', require('./routes/Users'));
+app.use('/slides', require('./routes/Slides'));
+app.use('/settings', require('./routes/Settings'));
+app.use('/posts', require('./routes/Posts'));
+app.use('/comments', require('./routes/Comments'));
+app.use('/category', require('./routes/Category'));
 
-app.listen(80);
-console.log('服务器开启成功');
+app.listen(80, () => console.log('服务器开启成功'));
