@@ -1,16 +1,23 @@
 let href = window.location.href;
-$($.ajax({
+$.ajax({
     type: "get",
     url: "/login/status",
     data: { href },
     success: function(response) {
-        let { status } = response
+        let { status, avatar, nickName } = response;
         if (status == 0) {
             return location.href = '/admin/login.html'
-        }
-        return
+        };
+        if (avatar) {
+            $('#avatar').prop('src', avatar);
+        } else {
+            $('#avatar').prop('src', '/uploads/avatar.jpg')
+        };
+        $('#name').html(nickName);
+        return;
     }
-}));
+});
+
 $(document).ajaxStart(() => {
     NProgress.start();
 });
