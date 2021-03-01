@@ -6,6 +6,7 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
+
     },
     auth: {
         type: mongoose.Schema.Types.ObjectId,
@@ -45,10 +46,16 @@ const Category = mongoose.model('Category', new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        unique: true
     },
     className: {
         type: String,
         required: true,
+    },
+    createAt: {
+        type: Date,
+        require: true,
+        default: Date.now,
     }
 }));
 

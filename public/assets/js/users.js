@@ -80,8 +80,6 @@ $('#formList').on('blur', '.form-control', function() {
     }
 })
 
-
-
 // 设置用户信息模板与添加修改用户模板
 function loadForm(data, callback) {
     $('tbody').html(template('FindTem', {
@@ -160,13 +158,14 @@ $('tbody').on('click', '#deleUser', function() {
 $('#allCheck').on('change', function() {
     $('[id=check]').prop('checked', $(this).prop('checked'));
 });
+
 $('tbody').on('change', '[id=check]', function() {
     if ($('[id=check]:checked').length == $('[id=check]').length) {
         $('#allCheck').prop('checked', true);
     } else {
         $('#allCheck').prop('checked', false);
     }
-})
+});
 
 // 利用formdata提交数据（包括文件）
 $('#formList').on('submit', '.formData', function() {

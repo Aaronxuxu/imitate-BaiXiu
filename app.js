@@ -25,7 +25,7 @@ app.use('/slides', require('./routes/Slides'));
 app.use('/settings', require('./routes/Settings'));
 app.use('/posts', require('./routes/Posts'));
 app.use('/comments', require('./routes/Comments'));
-app.use('/category', require('./routes/Category'));
+app.use('/categories', require('./routes/Category'));
 app.use('/', require('./routes/index'));
 
 app.listen(80, () => console.log('服务器开启成功'));
