@@ -1,12 +1,15 @@
 // 创建空数组
 let CateArr = []
 $('.allCheck').on('change', function() {
-    $('.onCheck').prop('checked', $(this).prop('checked'))
+    $('.onCheck').prop('checked', $(this).prop('checked'));
+    let check = $(this).prop('checked');
+    check ? $('.ManyDel').show() : $('.ManyDel').hide()
 });
 
 $('tbody').on('change', '.onCheck', function() {
     let checkLength = $('.onCheck:checked').length;
     let AllLength = $('.onCheck').length;
+    checkLength >= 2 ? $('.ManyDel').show() : $('.ManyDel').hide();
     if (checkLength == AllLength) {
         $('.allCheck').prop('checked', true);
     } else {
@@ -14,7 +17,7 @@ $('tbody').on('change', '.onCheck', function() {
     }
 });
 
-$('.btn-sm').on('click', function() {
+$('.ManyDel').on('click', function() {
     let id = '';
     $.each($('.onCheck:checked'), function(indexInArray, value) {
         return id += $(value).attr('data-id') + '-';
@@ -34,6 +37,8 @@ $('.btn-sm').on('click', function() {
                     return value._id != deleData[key]._id;
                 });
             };
+            $('.allCheck').prop('checked', false);
+            $('.ManyDel').hide();
             loadCate(CateArr);
         }
     });

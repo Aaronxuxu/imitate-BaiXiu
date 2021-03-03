@@ -11,18 +11,25 @@ module.exports = async(req, res) => {
         })
     };
     let { id } = req.params;
-    let val = await Users.findOneAndDelete({ _id: id });
-    if (val.avatar) {
-        let avatar = path.join(__dirname, '../../../public' + val.avatar);
-        fs.unlink(avatar, function(err) {
-            if (err) {
-                return console.log(err);
-            }
-        });
+    id = id.split('-');
+    let uArr = []
+    for (const key in id) {
+        uArr[key] = await Users.findOneAndDelete({ _id: id[key] })
     }
+    for (const key in uArr) {
+        if (uArr[key].avatar) {
+            let avatar = path.join(__dirname, '../../../public' + uArr[key].avatar);
+            fs.unlink(avatar, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+            })
+        }
+    }
+
     return res.send({
         status: 1,
         msg: '删除用户成功',
-        val
+        val: uArr
     });
 }

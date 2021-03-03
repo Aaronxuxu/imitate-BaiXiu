@@ -144,7 +144,7 @@ $('tbody').on('click', '#deleUser', function() {
                 }));
             } else {
                 userArr = userArr.filter(function(i) {
-                    return i._id != val._id
+                    return i._id != val[0]._id
                 });
                 return loadForm(userArr, function() {
                     alert('删除用户成功')
@@ -156,16 +156,46 @@ $('tbody').on('click', '#deleUser', function() {
 
 // 全选checkbok
 $('#allCheck').on('change', function() {
-    $('[id=check]').prop('checked', $(this).prop('checked'));
+    let check = $(this).prop('checked');
+    $('.check').prop('checked', check);
+    check ? $('.ManyDel').show() : $('.ManyDel').hide()
 });
 
+// 全选
 $('tbody').on('change', '[id=check]', function() {
-    if ($('[id=check]:checked').length == $('[id=check]').length) {
+    let chedLeng = $('.check:checked').length;
+    let allLen = $('.check').length;
+    chedLeng >= 2 ? $('.ManyDel').show() : $('.ManyDel').hide();
+    if (chedLeng == allLen) {
         $('#allCheck').prop('checked', true);
     } else {
         $('#allCheck').prop('checked', false);
     }
 });
+
+// 批量删除
+$('.ManyDel').on('click', function() {
+    let id = '';
+    $.each($('.check:checked'), function(indexInArray, valueOfElement) {
+        id += $(valueOfElement).attr('data-id') + '-';
+    });
+    id = id.substr(0, id.length - 1);
+    $.ajax({
+        type: "delete",
+        url: "/users/" + id,
+        success: function(response) {
+            let { status, msg, val } = response;
+            for (const key in val) {
+                delete val[key].password;
+                userArr = $.grep(userArr, function(elementOrValue, indexOrKey) {
+                    return elementOrValue._id != val[key]._id
+                });
+            };
+            loadForm(userArr);
+            console.log(userArr);
+        }
+    });
+})
 
 // 利用formdata提交数据（包括文件）
 $('#formList').on('submit', '.formData', function() {

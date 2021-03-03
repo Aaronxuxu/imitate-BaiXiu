@@ -6,7 +6,6 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-
     },
     auth: {
         type: mongoose.Schema.Types.ObjectId,
@@ -16,10 +15,12 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
     state: {
         type: Boolean,
         required: true,
+        default: false,
     },
     content: {
         type: String,
-        required: true
+        required: true,
+        default: ''
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,
@@ -38,7 +39,24 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         type: Date,
         default: Date.now,
         required: true,
-    }
+    },
+    meta: [{
+        views: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        likes: {
+            type: Number,
+            default: 0,
+            required: true
+        },
+        comments: {
+            type: Number,
+            default: 0,
+            required: true
+        }
+    }],
 }));
 
 // 文章类别
@@ -56,27 +74,6 @@ const Category = mongoose.model('Category', new mongoose.Schema({
         type: Date,
         require: true,
         default: Date.now,
-    }
-}));
-
-// 文章点赞/评论/点赞数量
-const Meta = mongoose.model('Meta', new mongoose.Schema({
-    post: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Posts'
-    },
-    views: {
-        type: Number,
-        default: 0
-    },
-    likes: {
-        type: Number,
-        default: 0
-    },
-    comments: {
-        type: Number,
-        default: 0
     }
 }));
 
@@ -108,4 +105,4 @@ const Comments = mongoose.model('Comment', new mongoose.Schema({
     }
 }));
 
-module.exports = { Posts, Category, Comments, Meta };
+module.exports = { Posts, Category, Comments };
