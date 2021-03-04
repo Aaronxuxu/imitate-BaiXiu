@@ -23,6 +23,7 @@ module.exports = async(req, res) => {
     req.session.isLogin = true;
     req.session.uname = acc.nickName;
     req.session.uid = acc._id;
+    req.session.urole = acc.role;
 
     req.app.locals.uname = acc.nickName;
 

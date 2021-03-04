@@ -1,30 +1,17 @@
-const pageination = require('mongoose-sex-page');
+const pagination = require('mongoose-sex-page');
 const { Posts } = require('../../../model/articleInfo');
 module.exports = async(req, res) => {
+    let { id } = req.params;
     let { state } = req.query;
-    let category = req.params.id;
+    let page = req.query.page || 1
+    let val;
     if (state == 'all') {
-        delete state
-    } else if (category == 'all') {
-        delete category
+        state = [0, 1];
     }
-    let val = await Posts.find({ category, state });
-    // let val;
-    // if (Status == 'all' && id != 'all') {
-    //     val = await Posts.find({
-    //         category: id
-    //     });
-    // } else if (id == 'all' && Status != 'all') {
-    //     val = await Posts.find({
-    //         state: Status
-    //     });
-    // } else if (id == 'all' && Status == 'all') {
-    //     val = await Posts.find();
-    // } else {
-    //     val = await Posts.find({
-    //         category: id,
-    //         state: Status
-    //     });
-    // }
-    console.log(val);
+    if (id == 'all') {
+        val = await pagination(Posts).find({ state: { $in: state } }).page(page).size(3).display(3).populate('auth').populate('category').exec();
+        return res.send({ val });
+    };
+    val = await pagination(Posts).find({ category: id, state: { $in: state } }).page(page).size(3).display(3).populate('auth').populate('category').exec();
+    return res.send({ val });
 };

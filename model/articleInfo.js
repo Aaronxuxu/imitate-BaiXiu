@@ -13,9 +13,9 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         required: true,
     },
     state: {
-        type: Boolean,
+        type: Number,
         required: true,
-        default: false,
+        default: 0,
     },
     content: {
         type: String,
@@ -40,7 +40,7 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
         default: Date.now,
         required: true,
     },
-    meta: [{
+    meta: {
         views: {
             type: Number,
             default: 0,
@@ -56,7 +56,7 @@ const Posts = mongoose.model('Posts', new mongoose.Schema({
             default: 0,
             required: true
         }
-    }],
+    },
 }));
 
 // 文章类别

@@ -67,8 +67,8 @@
     <script src="/assets/js/Basics.js"></script>
     <script src="/assets/vendors/art-template/template-web.js"></script>
     <script type="text/html" id="cateList">
-        {{each value}}
-        <option value="{{$value._id}}">{{$value.title}}</option>
+        {{each cate}}
+        <option value="{{$value._id}}" {{cateID&&cateID==$value._id? 'selected': ''}}>{{$value.title}}</option>
         {{/each}}
     </script>
     <script type="text/html" id="tips">
@@ -88,14 +88,14 @@
                 </div>
                 <div class="form-group">
                     <label for="content">内容</label>
-                    <textarea id="content" class="form-control input-lg" cols="30" rows="10" placeholder="内容" name="content" value={{value&&value.content}}></textarea>
+                    <textarea id="content" class="form-control input-lg" cols="30" rows="10" placeholder="内容" name="content">{{value&&value.content}}</textarea>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="feature">文章封面</label>
                     <!-- show when image chose -->
-                    <img class="help-block thumbnail" style="display: none">
+                    <img class="help-block thumbnail" style="display: {{value&&value.thumbnail?'block':'none'}}" src={{value&&value.thumbnail}}>
                     <input id="feature" class="form-control" type="file" name="thumbnail">
                 </div>
                 <div class="form-group">
@@ -104,13 +104,13 @@
                 </div>
                 <div class="form-group">
                     <label for="created">发布时间</label>
-                    <input id="created" class="form-control" type="datetime-local" name="createAt" value={{value&&value.createAt}}>
+                    <input id="created" class="form-control" type="date" name="{{value?'updateAt':'createAt'}}" value="{{value&&value.createAt.split('T')[0]}}">
                 </div>
                 <div class="form-group">
                     <label for="status">状态</label>
                     <select id="status" class="form-control" name="state">
-                        <option value="false" {{value&&value.state==false?'selected':''}}>草稿</option>
-                        <option value="true" {{value&&value.state==true?'selected':''}}>已发布</option>
+                        <option value="0" {{value&&value.state==0?'selected':''}}>草稿</option>
+                        <option value="1" {{value&&value.state==1?'selected':''}}>已发布</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -121,22 +121,75 @@
     </script>
     <script>
         // 获取分类名字
-        $.ajax({
-            type: "get",
-            url: "/categories",
-            success: function(response) {
-                let {
-                    msg,
-                    status,
-                    value
-                } = response;
-                $('#category').html(template('cateList', {
-                    value
-                }));
+        function getCate(cateID) {
+            $.ajax({
+                type: "get",
+                url: "/categories",
+                success: function(response) {
+                    let {
+                        msg,
+                        status,
+                        value
+                    } = response;
+
+                    if (cateID) {
+                        return $('#category').html(template('cateList', {
+                            cate: value,
+                            cateID
+                        }));
+                    }
+                    return $('#category').html(template('cateList', {
+                        cate: value,
+                    }));
+                }
+            });
+        }
+
+        function dateFormat(data) {
+            let year = data.substr(0, 4);
+            let month = data.substr(5, 2);
+            let day = data.substr(8, 2);
+            return year + '年' + month + '月' + day + '号'
+        };
+        template.defaults.imports.dateFormat = dateFormat;
+
+        function getUrl(data) {
+            if (!data) {
+                return -1
             }
-        });
+            let val = data.substr(1).split('&');
+            let urlOb = {}
+            for (const key in val) {
+                let uKey = val[key].split('=')[0];
+                let value = val[key].split('=')[1];
+                urlOb[uKey] = value;
+            }
+            return urlOb
+        }
+        let gUrl = getUrl(location.search);
+
         // 页面加载
-        $('.container-fluid').html(template('formRow'));
+        if (gUrl == -1) {
+            getCate()
+            $('.container-fluid').html(template('formRow'));
+        } else {
+            let id = gUrl.id;
+            $.ajax({
+                type: "get",
+                url: "/posts/" + id,
+                success: function(response) {
+                    let {
+                        value
+                    } = response;
+                    let cateID = value.category;
+                    $('.container-fluid').html(template('formRow', {
+                        value
+                    }));
+                    getCate(cateID);
+                }
+            });
+        }
+
 
         // 页面加载需要上传的照片
         $('.container-fluid').on('change', '#feature', function() {
