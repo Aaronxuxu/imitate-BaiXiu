@@ -1,11 +1,5 @@
 const { Posts } = require('../../../model/articleInfo');
 module.exports = async(req, res) => {
-    let val = await Posts.find({ state: 1 }).populate([{ path: 'auth' }, { path: 'category' }]);
-    let random = []
-    for (let i = 0; i < 5; i++) {
-        let num = Math.floor(Math.random() * val.length);
-        random[i] = val[num];
-    }
-    console.log(random);
-    res.send(random);
+    let posts = await Posts.aggregate([{ $match: { 'state': 1 } }, { $sample: { size: 5 } }, { $project: { _id: 1, thumbnail: 1, 'meta.views': 1, title: 1 } }]);
+    res.send({ posts, status: 1 });
 }

@@ -103,7 +103,7 @@
         <tr>
             <td>{{$value.title}}</td>
             <td>{{$value.auth.nickName}}</td>
-            <td>{{$value.category&&value.category.title}}</td>
+            <td>{{$value.category.title}}</td>
             <td class="text-center">{{dateFormat($value.createAt)}}</td>
             <td class="text-center">{{$value.state==1?'已发布':'草稿'}}</td>
             <td class="text-center">

@@ -1,4 +1,5 @@
 let href = window.location.href;
+
 $.ajax({
     type: "get",
     url: "/login/status",
