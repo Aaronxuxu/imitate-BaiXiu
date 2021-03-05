@@ -173,6 +173,7 @@
     <script src="/assets/vendors/art-template/template-web.js"></script>
     <script src="/assets/vendors/jquery/jquery.min.js"></script>
     <script src="/assets/js/DateFormat.js"></script>
+    <script src="/assets/js/indexB.js"></script>
     <script>
         //
         var swiper = Swipe(document.querySelector('.swipe'), {
@@ -309,27 +310,11 @@
             }
         });
 
-        // 获取随机推荐
-        $.ajax({
-            type: "get",
-            url: "/posts/random",
-            success: function(response) {
-                let {
-                    posts,
-                    status
-                } = response;
-                if (status == 1) {
-                    $('.random').html(template('random', {
-                        posts
-                    }));
-                }
-            }
-        });
-
         // 路由跳转
         $('.nav').on('click', 'a', function() {
-            console.log($(this).attr('data-id'));
-        })
+            let id = $(this).attr('data-id');
+            location.href = '/list.html?id=' + id;
+        });
     </script>
 </body>
 

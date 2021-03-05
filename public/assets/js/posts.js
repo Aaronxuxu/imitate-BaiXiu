@@ -116,7 +116,7 @@ $('tbody').on('click', '.postsDel', function() {
 // 修改文章
 $('tbody').on('click', '.postsEdit', function() {
     let id = $(this).attr('data-id');
-    location.href = '/admin/post-add.html?id=' + id + '&i3=2312312&i5=2312312&i6=2312312'
+    location.href = '/admin/post-add.html?id=' + id
 });
 
 // 点赞与踩文章
