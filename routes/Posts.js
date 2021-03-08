@@ -33,4 +33,7 @@ Posts.put('/:id', require('./action/posts/postsUpbyId'));
 
 // 文章点赞
 Posts.post('/fabulous/:id', require('./action/posts/postsofFabulous'));
+
+// 文章搜索
+Posts.get('/search/:key', require('./action/posts/postsOfSearch'));
 module.exports = Posts

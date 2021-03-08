@@ -19,11 +19,13 @@ module.exports = async(req, res) => {
         });
     };
 
+    // 登录者邮箱
     req.session.uemail = acc.email;
     req.session.isLogin = true;
     req.session.uname = acc.nickName;
     req.session.uid = acc._id;
     req.session.urole = acc.role;
+    req.session.status = acc.status;
 
     req.app.locals.uname = acc.nickName;
 

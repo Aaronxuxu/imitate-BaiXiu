@@ -181,7 +181,7 @@
                     let {
                         value
                     } = response;
-                    let cateID = value.category;
+                    let cateID = value.category._id;
                     $('.container-fluid').html(template('formRow', {
                         value
                     }));

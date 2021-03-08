@@ -7,7 +7,7 @@ const Slides = mongoose.model('Slide', new mongoose.Schema({
     link: {
         type: String
     },
-    title: {
+    image: {
         type: String,
         required: true,
     }

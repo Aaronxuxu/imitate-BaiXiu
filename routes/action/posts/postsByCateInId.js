@@ -28,6 +28,10 @@ module.exports = async(req, res) => {
                 as: 'auth'
             }
         }]);
+        val.forEach(element => {
+            element.category = element.category[0];
+            element.auth = element.auth[0]
+        });
         return res.send({ val, status: 1, cate });
     }
     if (state == 'all') {
